@@ -57,5 +57,5 @@ void Window::synchronize(int fps)
 	m_Ticks++;
 	if (timeToSleep > 0)
 		SDL_Delay(timeToSleep);
-	m_LastFrameTime = SDL_GetTicks();
+	m_LastFrameTime = currentTime + timeToSleep;
 }
