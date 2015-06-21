@@ -1,9 +1,17 @@
 #include "Window.h"
+#include "Input.h"
+
+int Window::m_Width = 0;
+int Window::m_Height = 0;
+glm::vec4 Window::m_ClearColor;
 
 Window::Window(const std::string& name, int width, int height)
 {
 	m_Width = width;
 	m_Height = height;
+	m_Name = name;
+
+	SDL_Init(SDL_INIT_EVERYTHING);
 
 	Uint32 flags = SDL_WINDOW_OPENGL;
 	m_Window = SDL_CreateWindow(name.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, flags);
@@ -12,10 +20,16 @@ Window::Window(const std::string& name, int width, int height)
 
 	if (glewInit() != GLEW_OK)
 		std::cout << "Couldn't initialize Glew!" << std::endl;
-
+	
 	std::cout << "Open GL version: " << glGetString(GL_VERSION) << std::endl;
 
-	glClearColor(0, 0, 1, 1);
+	m_ClearColor = glm::vec4(0, 0, 0, 0);
+	glClearColor(m_ClearColor.x, m_ClearColor.y, m_ClearColor.z, m_ClearColor.w);
+	glViewport(0, 0, m_Width, m_Height);
+	//glEnable(GL_DEPTH_TEST);
+	//glDepthFunc(GL_LESS);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
 
 	SDL_GL_SetSwapInterval(0);
 }
@@ -26,8 +40,17 @@ Window::~Window()
 		SDL_DestroyWindow(m_Window);
 }
 
-void Window::input()
+void Window::swapBuffer()
 {
+	SDL_GL_SwapWindow(m_Window);
+}
+
+void Window::begin()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	m_StartFrameTime = SDL_GetTicks();
+
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -37,25 +60,86 @@ void Window::input()
 			m_ShouldClose = true;
 			break;
 		case SDL_KEYDOWN:
-			std::cout << "Pressed " << event.key.keysym.sym << std::endl;
+			Input::pressKey(event.key.keysym.sym);
+			break;
+		case SDL_KEYUP:
+			Input::releaseKey(event.key.keysym.sym);
 			break;
 		}
 	}
 }
 
-void Window::swapBuffer()
+void Window::end()
 {
-	SDL_GL_SwapWindow(m_Window);
+	Input::update();
+
+#if 1
+	Uint32 difference = SDL_GetTicks() - m_StartFrameTime;
+	float maxFrameTime = 1000.0f / m_MaxFps;
+	if ((Uint32)maxFrameTime > difference)
+	{
+		SDL_Delay((Uint32)maxFrameTime - difference);
+		m_Delta = 1.0f / m_MaxFps;
+		m_InstantaneousFps = m_MaxFps;
+	}
+	else
+	{
+		m_Delta = difference / 1000.0f;
+		m_InstantaneousFps = 1.0f / m_Delta;
+	}
+#else
+	Uint32 difference = SDL_GetTicks() - m_StartFrameTime;
+	if (difference > 0)
+	{
+		m_InstantaneousFps = 1000.0f / difference;
+		m_Delta = 1.0f / m_InstantaneousFps;
+	}
+#endif
+
+	m_Ticks++;
+
+	if (m_Ticks % (int)m_MaxFps == 0)
+	{
+		std::string fpsName = m_Name + " - FPS: " + std::to_string(getFps());
+		SDL_SetWindowTitle(m_Window, fpsName.c_str());
+		//std::cout << SDL_GetTicks() << std::endl;
+	}
+
+	//GLenum error = glGetError();
+	//if (error != GL_NO_ERROR)
+		//std::cout << "Open GL error: " << error << std::endl;
 }
 
-void Window::synchronize(int fps)
+void Window::calculateFPS()
 {
-	Uint32 maxFrameTime = 1000 / fps; //16
-	Uint32 currentTime = SDL_GetTicks(); //800
-	Uint32 difference = currentTime - m_LastFrameTime; //800 - 0 = 800
-	int timeToSleep = maxFrameTime - difference; //16 - 800 = -784
-	m_Ticks++;
-	if (timeToSleep > 0)
-		SDL_Delay(timeToSleep);
-	m_LastFrameTime = currentTime + timeToSleep;
+	static const int NUM_SAMPLES = 10;
+	static Uint32 frameTimes[NUM_SAMPLES];
+	static int currentFrame = 0;
+	static Uint32 prevTicks = SDL_GetTicks();
+
+	Uint32 currentTicks = SDL_GetTicks();
+	Uint32 frameTime = currentTicks - prevTicks; //in milliseconds
+	prevTicks = currentTicks;
+
+	frameTimes[currentFrame % NUM_SAMPLES] = frameTime;
+
+	currentFrame++;
+
+	int count;
+	if (currentFrame < NUM_SAMPLES)
+		count = currentFrame;
+	else
+		count = NUM_SAMPLES;
+
+	float average = 0;
+
+	for (int i = 0; i < count; i++)
+		average += frameTimes[i];
+
+	average /= count;
+
+	if (average > 0)
+		m_Fps = 1000.0f / average;
+	else
+		m_Fps = 60.0f;
 }
