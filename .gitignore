@@ -1,7 +1,6 @@
-Ao/Debug/
-Ao/Release/
-Debug/
-Release/
+Intermediates/
 *.suo
 *.sdf
 *.opensdf
+*.pdb
+*.ilk
