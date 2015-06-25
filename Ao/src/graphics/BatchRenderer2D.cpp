@@ -1,5 +1,4 @@
 #include "BatchRenderer2D.h"
-#include <iostream>
 
 BatchRenderer2D::BatchRenderer2D()
 {
@@ -63,6 +62,11 @@ void BatchRenderer2D::init()
 	glBindVertexArray(0);
 
 	delete[] indices;
+
+	//initialize font
+	m_Atlas = ftgl::texture_atlas_new(512, 512, 1);
+	m_Font = ftgl::texture_font_new_from_file(m_Atlas, 20, "Resources/Fonts/arial.ttf");
+	texture_font_get_glyph(m_Font, 'A');
 }
 
 void BatchRenderer2D::begin()
@@ -126,6 +130,60 @@ void BatchRenderer2D::submit(const Renderable2D* renderable)
 
 	m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(position.x, position.y + size.y, position.z, 1.0f));
 	m_Buffer->uv = uvs[3];
+	m_Buffer->sampler = samplerIndex;
+	m_Buffer->color = color;
+	m_Buffer++;
+
+	m_IndexCount += 6;
+}
+
+void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& position, unsigned int color)
+{
+	float samplerIndex = 0.0f;
+	
+	bool found = false;
+	for (size_t i = 0; i < m_Textures.size(); i++)
+	{
+		if (m_Textures[i] == m_Atlas->id)
+		{
+			found = true;
+			samplerIndex = (float)(i + 1);
+			break;
+		}
+	}
+
+	if (!found)
+	{
+		if (m_Textures.size() >= MAX_TEXTURES)
+		{
+			end();
+			begin();
+		}
+
+		m_Textures.push_back(m_Atlas->id);
+		samplerIndex = (float)m_Textures.size();
+	}
+
+	m_Buffer->position = glm::vec3(-8, -8, 0);
+	m_Buffer->uv = glm::vec2(0, 1);
+	m_Buffer->sampler = samplerIndex;
+	m_Buffer->color = color;
+	m_Buffer++;
+
+	m_Buffer->position = glm::vec3(8, -8, 0);
+	m_Buffer->uv = glm::vec2(1, 1);
+	m_Buffer->sampler = samplerIndex;
+	m_Buffer->color = color;
+	m_Buffer++;
+
+	m_Buffer->position = glm::vec3(8, 8, 0);
+	m_Buffer->uv = glm::vec2(1, 0);
+	m_Buffer->sampler = samplerIndex;
+	m_Buffer->color = color;
+	m_Buffer++;
+
+	m_Buffer->position = glm::vec3(-8, 8, 0);
+	m_Buffer->uv = glm::vec2(0, 0);
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;

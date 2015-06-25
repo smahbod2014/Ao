@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <vector>
+#include <freetype-gl.h>
 
 #include "Renderer2D.h"
 #include "Renderable2D.h"
@@ -24,6 +25,7 @@ public:
 
 	virtual void begin() override;
 	virtual void submit(const Renderable2D* renderable) override;
+	virtual void drawString(const std::string& text, const glm::vec3& position, unsigned int color) override;
 	virtual void end() override;
 	virtual void flush() override;
 private:
@@ -34,6 +36,8 @@ private:
 	GLuint m_Ibo;
 	GLsizei m_IndexCount;
 	VertexData* m_Buffer = nullptr;
+	ftgl::texture_atlas_t* m_Atlas;
+	ftgl::texture_font_t* m_Font;
 
 	std::vector<GLuint> m_Textures;
 };

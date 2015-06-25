@@ -4,16 +4,17 @@
 #include "src/graphics/Shader.h"
 #include "src/graphics/Layer.h"
 #include "src/graphics/BatchRenderer2D.h"
-#include "src/managers/TextureManager.h"
 #include "src/graphics/Sprite.h"
 #include "src/graphics/Group.h"
+#include "src/graphics/Label.h"
+#include "src/managers/TextureManager.h"
 #include <ctime>
 
 int main(int argc, char* argv[])
 {
 	srand((unsigned int)time(NULL));
 
-	float MAX_FPS = 1000.0f;
+	float MAX_FPS = 120.0f;
 	Window window("Ao", 960, 540);
 	window.setMaxFPS(MAX_FPS);
 
@@ -28,7 +29,6 @@ int main(int argc, char* argv[])
 	BatchRenderer2D* renderer = new BatchRenderer2D();
 
 	Layer layer(renderer, shader, glm::ortho<float>(-16.0f, 16.0f, -9.0f, 9.0f, -1.0f, 1.0f));
-
 
 	
 	int iterations = 0;
@@ -52,6 +52,8 @@ int main(int argc, char* argv[])
 
 	std::cout << "Made " << iterations << " sprites" << std::endl;
 	
+	Label* label = new Label("Hello", 10, 3, 0xffffffff);
+	layer.add(label);
 
 	/*glm::mat4 matrix(1.0);
 	matrix[3][0] = -5;

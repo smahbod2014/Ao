@@ -17,6 +17,7 @@ public:
 
 	virtual void begin() {}
 	virtual void submit(const Renderable2D* renderable) = 0;
+	virtual void drawString(const std::string& text, const glm::vec3& position, unsigned int color) {}
 	virtual void end() {}
 	virtual void flush() = 0;
 protected:
