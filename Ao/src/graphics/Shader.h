@@ -8,13 +8,12 @@
 class Shader
 {
 public:
-	Shader();
+	Shader(const char* vert, const char* frag);
 	~Shader();
 
 	void bind();
 	void unbind();
 
-	void load(const char* vert, const char* frag);
 	void setUniform1(const std::string& uniformName, float value);
 	void setUniform1(const std::string& uniformName, int value);
 	void setUniform1(const std::string& uniformName, unsigned int value);

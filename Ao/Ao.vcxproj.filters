@@ -217,7 +217,13 @@
       <Filter>Source Files\ext\freetype-gl</Filter>
     </ClCompile>
     <ClCompile Include="src\graphics\Label.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Font.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\managers\FontManager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -300,6 +306,18 @@
       <Filter>Header Files\ext\freetype-gl</Filter>
     </ClInclude>
     <ClInclude Include="src\graphics\Label.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Font.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\FontManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Ao.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

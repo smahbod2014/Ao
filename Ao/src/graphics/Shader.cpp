@@ -3,15 +3,7 @@
 
 GLuint Shader::currentlyBoundID = 0;
 
-Shader::Shader()
-{
-}
-
-Shader::~Shader()
-{
-}
-
-void Shader::load(const char* vert, const char* frag)
+Shader::Shader(const char* vert, const char* frag)
 {
 	//Read in the vertex and fragment shaders
 	//We must delete these after we are finished compiling the shaders
@@ -27,6 +19,11 @@ void Shader::load(const char* vert, const char* frag)
 	delete[] vv;
 	if (vf)
 		delete[] vf;
+}
+
+Shader::~Shader()
+{
+	
 }
 
 void Shader::bind()

@@ -5,7 +5,7 @@
 
 std::map<const std::string, const Texture*> TextureManager::m_Cache;
 
-void TextureManager::loadTexture(const std::string& alias, const std::string& path)
+void TextureManager::load(const std::string& alias, const std::string& path)
 {
 	if (m_Cache.find(alias) != m_Cache.end())
 	{
@@ -31,7 +31,7 @@ void TextureManager::loadTexture(const std::string& alias, const std::string& pa
 	m_Cache[alias] = new Texture(texID, width, height);
 }
 
-const Texture* TextureManager::getTexture(const std::string& alias)
+const Texture* TextureManager::get(const std::string& alias)
 {
 	if (m_Cache.find(alias) == m_Cache.end())
 		return 0;

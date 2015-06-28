@@ -30,6 +30,8 @@ Window::Window(const std::string& name, int width, int height)
 	//glDepthFunc(GL_LESS);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	SDL_GL_SetSwapInterval(0);
 }
@@ -105,9 +107,9 @@ void Window::end()
 		//std::cout << SDL_GetTicks() << std::endl;
 	}
 
-	//GLenum error = glGetError();
-	//if (error != GL_NO_ERROR)
-		//std::cout << "Open GL error: " << error << std::endl;
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+		std::cout << "Open GL error: " << error << std::endl;
 }
 
 void Window::calculateFPS()
@@ -142,4 +144,40 @@ void Window::calculateFPS()
 		m_Fps = 1000.0f / average;
 	else
 		m_Fps = 60.0f;
+}
+
+void Window::clear()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Window::update()
+{
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+		std::cout << "Open GL error: " << error << std::endl;
+
+	SDL_GL_SwapWindow(m_Window);
+
+	SDL_Event event;
+	while (SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+		case SDL_QUIT:
+			m_ShouldClose = true;
+			break;
+		case SDL_KEYDOWN:
+			Input::pressKey(event.key.keysym.sym);
+			break;
+		case SDL_KEYUP:
+			Input::releaseKey(event.key.keysym.sym);
+			break;
+		}
+	}
+}
+
+void Window::updateInput()
+{
+	Input::update();
 }

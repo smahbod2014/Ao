@@ -20,6 +20,7 @@ protected:
 	Renderable2D();
 public:
 	Renderable2D(const glm::vec3& position, const glm::vec2& size, unsigned int color);
+	Renderable2D(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color);
 	virtual ~Renderable2D() {}
 
 	virtual void submit(Renderer2D* renderer) const;

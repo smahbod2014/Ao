@@ -62,11 +62,6 @@ void BatchRenderer2D::init()
 	glBindVertexArray(0);
 
 	delete[] indices;
-
-	//initialize font
-	m_Atlas = ftgl::texture_atlas_new(512, 512, 1);
-	m_Font = ftgl::texture_font_new_from_file(m_Atlas, 20, "Resources/Fonts/arial.ttf");
-	texture_font_get_glyph(m_Font, 'A');
 }
 
 void BatchRenderer2D::begin()
@@ -137,14 +132,14 @@ void BatchRenderer2D::submit(const Renderable2D* renderable)
 	m_IndexCount += 6;
 }
 
-void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& position, unsigned int color)
+void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& position, const Font& font, unsigned int color)
 {
 	float samplerIndex = 0.0f;
 	
 	bool found = false;
 	for (size_t i = 0; i < m_Textures.size(); i++)
 	{
-		if (m_Textures[i] == m_Atlas->id)
+		if (m_Textures[i] == font.getID())
 		{
 			found = true;
 			samplerIndex = (float)(i + 1);
@@ -160,11 +155,66 @@ void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& posit
 			begin();
 		}
 
-		m_Textures.push_back(m_Atlas->id);
+		m_Textures.push_back(font.getID());
 		samplerIndex = (float)m_Textures.size();
 	}
 
-	m_Buffer->position = glm::vec3(-8, -8, 0);
+	float x = position.x;
+	const glm::vec2& scale = font.getScale();
+
+	for (size_t i = 0; i < text.length(); i++)
+	{
+		const char& c = text[i];
+		ftgl::texture_glyph_t* glyph = ftgl::texture_font_get_glyph(font.getFont(), c);
+		if (glyph)
+		{
+			if (i > 0)
+			{
+				float kerning = texture_glyph_get_kerning(glyph, text[i - 1]);
+				x += kerning / scale.x;
+			}
+
+			float x0 = x + glyph->offset_x / scale.x;
+			float y0 = position.y + glyph->offset_y / scale.y;
+			float x1 = x0 + glyph->width / scale.x;
+			float y1 = y0 - glyph->height / scale.y;
+
+			float u0 = glyph->s0;
+			float v0 = glyph->t0;
+			float u1 = glyph->s1;
+			float v1 = glyph->t1;
+
+			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x0, y0, 0.0f, 1.0f));
+			m_Buffer->uv = glm::vec2(u0, v0);
+			m_Buffer->sampler = samplerIndex;
+			m_Buffer->color = color;
+			m_Buffer++;
+
+			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x0, y1, 0.0f, 1.0f));
+			m_Buffer->uv = glm::vec2(u0, v1);
+			m_Buffer->sampler = samplerIndex;
+			m_Buffer->color = color;
+			m_Buffer++;
+
+			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x1, y1, 0.0f, 1.0f));
+			m_Buffer->uv = glm::vec2(u1, v1);
+			m_Buffer->sampler = samplerIndex;
+			m_Buffer->color = color;
+			m_Buffer++;
+
+			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x1, y0, 0.0f, 1.0f));
+			m_Buffer->uv = glm::vec2(u1, v0);
+			m_Buffer->sampler = samplerIndex;
+			m_Buffer->color = color;
+			m_Buffer++;
+
+			m_IndexCount += 6;
+
+			x += glyph->advance_x / scale.x;
+		}
+	}
+
+	/*m_Buffer->position = glm::vec3(-8, -8, 0);
 	m_Buffer->uv = glm::vec2(0, 1);
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
@@ -188,7 +238,7 @@ void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& posit
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_IndexCount += 6;
+	m_IndexCount += 6;*/
 }
 
 void BatchRenderer2D::end()

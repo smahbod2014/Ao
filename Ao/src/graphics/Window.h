@@ -12,6 +12,9 @@ public:
 	Window(const std::string& name, int width, int height);
 	~Window();
 
+	void clear();
+	void update();
+	void updateInput();
 	void begin();
 	void swapBuffer();
 	void end();
