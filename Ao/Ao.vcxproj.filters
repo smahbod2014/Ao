@@ -46,11 +46,17 @@
     <Filter Include="Source Files\ext\freetype-gl">
       <UniqueIdentifier>{b9acb6bb-12f1-44cc-829e-0423c76691c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\audio">
+    <Filter Include="Header Files\Audio">
+      <UniqueIdentifier>{33ea2f69-bebf-4338-845c-cf75c56ac960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Audio">
       <UniqueIdentifier>{0d3219d3-41c5-4b3b-a185-ee53f5e4c679}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\audio">
-      <UniqueIdentifier>{33ea2f69-bebf-4338-845c-cf75c56ac960}</UniqueIdentifier>
+    <Filter Include="Source Files\Math">
+      <UniqueIdentifier>{7c77feda-2e2a-4e75-9add-9839e5113c57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Math">
+      <UniqueIdentifier>{8b90bb08-b6f1-4aa0-80d7-3f36868cbf1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -235,10 +241,19 @@
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
     <ClCompile Include="src\audio\Sound.cpp">
-      <Filter>Source Files\audio</Filter>
+      <Filter>Source Files\Audio</Filter>
     </ClCompile>
     <ClCompile Include="src\audio\Music.cpp">
-      <Filter>Source Files\audio</Filter>
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\vec4.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\vec2.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="src\math\vec3.cpp">
+      <Filter>Source Files\Math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -339,10 +354,22 @@
       <Filter>Header Files\Managers</Filter>
     </ClInclude>
     <ClInclude Include="src\audio\Sound.h">
-      <Filter>Header Files\audio</Filter>
+      <Filter>Header Files\Audio</Filter>
     </ClInclude>
     <ClInclude Include="src\audio\Music.h">
-      <Filter>Header Files\audio</Filter>
+      <Filter>Header Files\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\vec4.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\mat4.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\vec2.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\vec3.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

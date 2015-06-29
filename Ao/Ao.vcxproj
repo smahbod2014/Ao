@@ -149,6 +149,9 @@
     <ClCompile Include="src\managers\PicoPNG.cpp" />
     <ClCompile Include="src\managers\SoundManager.cpp" />
     <ClCompile Include="src\managers\TextureManager.cpp" />
+    <ClCompile Include="src\math\vec2.cpp" />
+    <ClCompile Include="src\math\vec3.cpp" />
+    <ClCompile Include="src\math\vec4.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ext\freetype-gl\freetype-gl.h" />
@@ -185,6 +188,10 @@
     <ClInclude Include="src\managers\SoundManager.h" />
     <ClInclude Include="src\managers\TextureManager.h" />
     <ClInclude Include="src\managers\Timer.h" />
+    <ClInclude Include="src\math\mat4.h" />
+    <ClInclude Include="src\math\vec2.h" />
+    <ClInclude Include="src\math\vec3.h" />
+    <ClInclude Include="src\math\vec4.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
