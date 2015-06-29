@@ -10,8 +10,11 @@
 #include "graphics/Group.h"
 #include "graphics/Label.h"
 #include "graphics/Font.h"
+#include "audio/Sound.h"
+#include "audio/Music.h"
 #include "managers/TextureManager.h"
 #include "managers/FontManager.h"
+#include "managers/SoundManager.h"
 #include "managers/Input.h"
 #include "managers/Timer.h"
 #include <ctime>
@@ -22,7 +25,7 @@ public:
 	void start()
 	{
 		srand((unsigned int)time(NULL));
-		FontManager::load("default", "Resources/Fonts/arial.ttf", 35.0f);
+		FontManager::load("default", "Resources/Fonts/MAGNETOB.ttf", 35.0f);
 		init();
 		run();
 	}
@@ -30,6 +33,9 @@ protected:
 	Ao() {}
 	virtual ~Ao()
 	{
+		TextureManager::clean();
+		FontManager::clean();
+		SoundManager::clean();
 		if (m_Window) delete m_Window;
 		if (m_Timer) delete m_Timer;
 	}
@@ -58,19 +64,15 @@ private:
 		unsigned int frames = 0;
 		unsigned int updates = 0;
 
+		float previousTime = m_Timer->elapsed();
 		while (!m_Window->shouldClose())
 		{
 			m_Window->clear();
 
-			float dt = m_Timer->elapsed() - updateTimer;
-			if (dt >= updateTick)
-			{
-				m_Delta = dt;
-				update(dt);
-				m_Window->updateInput();
-				updates++;
-				updateTimer += updateTick;
-			}
+			m_Delta = m_Timer->elapsed() - previousTime;
+			update(m_Delta);
+			previousTime = m_Timer->elapsed();
+			m_Window->updateInput();
 
 			render();
 			frames++;

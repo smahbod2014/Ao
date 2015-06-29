@@ -5,6 +5,11 @@
 struct Texture
 {
 	Texture(GLuint texID, unsigned long texWidth, unsigned long texHeight) : id(texID), width(texWidth), height(texHeight) {}
-	GLuint id;
+	~Texture()
+	{
+		if (id)
+			glDeleteTextures(1, &id);
+	}
+	GLuint id = 0;
 	unsigned long width, height;
 };

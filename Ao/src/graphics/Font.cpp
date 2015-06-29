@@ -10,7 +10,10 @@ Font::Font(const std::string& filepath, float size)
 
 Font::~Font()
 {
-
+	if (m_Font)
+		texture_font_delete(m_Font);
+	if (m_Atlas)
+		texture_atlas_delete(m_Atlas);
 }
 
 void Font::setScale(float x, float y)

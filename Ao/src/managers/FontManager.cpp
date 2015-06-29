@@ -29,3 +29,11 @@ Font* FontManager::get(const std::string& alias)
 
 	return m_Cache[alias];
 }
+
+void FontManager::clean()
+{
+	for (auto& it : m_Cache)
+		delete it.second;
+
+	m_Cache.clear();
+}

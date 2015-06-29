@@ -1,5 +1,6 @@
 #include "Window.h"
 #include "../managers/Input.h"
+#include "../managers/SoundManager.h"
 
 int Window::m_Width = 0;
 int Window::m_Height = 0;
@@ -20,6 +21,8 @@ Window::Window(const std::string& name, int width, int height)
 
 	if (glewInit() != GLEW_OK)
 		std::cout << "Couldn't initialize Glew!" << std::endl;
+
+	SoundManager::init();
 	
 	std::cout << "Open GL version: " << glGetString(GL_VERSION) << std::endl;
 
@@ -40,6 +43,9 @@ Window::~Window()
 {
 	if (m_Window)
 		SDL_DestroyWindow(m_Window);
+
+	SoundManager::destroy();
+	SDL_Quit();
 }
 
 void Window::swapBuffer()

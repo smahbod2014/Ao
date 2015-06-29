@@ -46,6 +46,12 @@
     <Filter Include="Source Files\ext\freetype-gl">
       <UniqueIdentifier>{b9acb6bb-12f1-44cc-829e-0423c76691c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\audio">
+      <UniqueIdentifier>{0d3219d3-41c5-4b3b-a185-ee53f5e4c679}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\audio">
+      <UniqueIdentifier>{33ea2f69-bebf-4338-845c-cf75c56ac960}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -225,6 +231,15 @@
     <ClCompile Include="src\managers\FontManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="src\managers\SoundManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\Sound.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio\Music.cpp">
+      <Filter>Source Files\audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\BatchRenderer2D.h">
@@ -318,7 +333,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\managers\Timer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\managers\SoundManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\Sound.h">
+      <Filter>Header Files\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio\Music.h">
+      <Filter>Header Files\audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

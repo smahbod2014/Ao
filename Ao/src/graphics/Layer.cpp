@@ -23,6 +23,8 @@ Layer::~Layer()
 	if (m_Shader) delete m_Shader;
 	for (size_t i = 0; i < m_Renderables.size(); i++)
 		delete m_Renderables[i];
+
+	m_Renderables.clear();
 }
 
 void Layer::add(Renderable2D* renderable)

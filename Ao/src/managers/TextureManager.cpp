@@ -38,3 +38,11 @@ const Texture* TextureManager::get(const std::string& alias)
 
 	return m_Cache[alias];
 }
+
+void TextureManager::clean()
+{
+	for (auto& it : m_Cache)
+		delete it.second;
+
+	m_Cache.clear();
+}
