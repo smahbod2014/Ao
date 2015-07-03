@@ -52,6 +52,11 @@ vec3 operator/(const vec3& a, float b)
 	return vec3(a.x / b, a.y / b, a.z / b);
 }
 
+vec3 operator-(const vec3& a)
+{
+	return vec3(-a.x, -a.y, -a.z);
+}
+
 void vec3::operator+=(const vec3& a)
 {
 	x += a.x;

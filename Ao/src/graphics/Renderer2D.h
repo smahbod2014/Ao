@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <glm/glm.hpp>
 #include "Font.h"
+#include "../math/AoMath.h"
 
 class Renderable2D;
 
@@ -13,15 +13,15 @@ protected:
 public:
 	virtual ~Renderer2D() {}
 
-	void push(const glm::mat4& matrix);
+	void push(const mat4& matrix);
 	void pop();
 
 	virtual void begin() {}
 	virtual void submit(const Renderable2D* renderable) = 0;
-	virtual void drawString(const std::string& text, const glm::vec3& position, const Font& font, unsigned int color) {}
+	virtual void drawString(const std::string& text, const vec3& position, const Font& font, unsigned int color) {}
 	virtual void end() {}
 	virtual void flush() = 0;
 protected:
-	std::vector<glm::mat4> m_TransformationStack;
-	const glm::mat4* m_TransformationBack;
+	std::vector<mat4> m_TransformationStack;
+	const mat4* m_TransformationBack;
 };

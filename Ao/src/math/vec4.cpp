@@ -53,6 +53,11 @@ vec4 operator/(const vec4& a, float b)
 	return vec4(a.x / b, a.y / b, a.z / b, a.w / b);
 }
 
+vec4 operator-(const vec4& a)
+{
+	return vec4(-a.x, -a.y, -a.z, -a.w);
+}
+
 void vec4::operator+=(const vec4& a)
 {
 	x += a.x;

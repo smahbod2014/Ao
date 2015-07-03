@@ -17,6 +17,8 @@
 #define SAMPLER_INDEX 2
 #define COLOR_INDEX 3
 
+class vec3;
+
 class BatchRenderer2D : public Renderer2D
 {
 public:
@@ -25,7 +27,7 @@ public:
 
 	virtual void begin() override;
 	virtual void submit(const Renderable2D* renderable) override;
-	virtual void drawString(const std::string& text, const glm::vec3& position, const Font& font, unsigned int color) override;
+	virtual void drawString(const std::string& text, const vec3& position, const Font& font, unsigned int color) override;
 	virtual void end() override;
 	virtual void flush() override;
 private:

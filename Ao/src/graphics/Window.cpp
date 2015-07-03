@@ -4,7 +4,7 @@
 
 int Window::m_Width = 0;
 int Window::m_Height = 0;
-glm::vec4 Window::m_ClearColor;
+vec4 Window::m_ClearColor;
 
 Window::Window(const std::string& name, int width, int height)
 {
@@ -26,7 +26,7 @@ Window::Window(const std::string& name, int width, int height)
 	
 	std::cout << "Open GL version: " << glGetString(GL_VERSION) << std::endl;
 
-	m_ClearColor = glm::vec4(0, 0, 0, 0);
+	m_ClearColor = vec4(0, 0, 0, 0);
 	glClearColor(m_ClearColor.x, m_ClearColor.y, m_ClearColor.z, m_ClearColor.w);
 	glViewport(0, 0, m_Width, m_Height);
 	//glEnable(GL_DEPTH_TEST);

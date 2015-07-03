@@ -14,6 +14,7 @@ public:
 	friend vec2 operator-(const vec2& a, float b);
 	friend vec2 operator*(const vec2& a, float b);
 	friend vec2 operator/(const vec2& a, float b);
+	friend vec2 operator-(const vec2& a);
 	void operator+=(const vec2& a);
 	void operator+=(float b);
 	void operator-=(const vec2& a);

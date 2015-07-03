@@ -1,17 +1,17 @@
 #include "Group.h"
 #include "Renderer2D.h"
-#include <glm/gtx/transform.hpp>
+#include "../math/AoMath.h"
 
 Group::Group()
 {
-	m_Transformation = glm::mat4(1.0f);
-	m_Origin = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_Transformation = mat4::identity();
+	m_Origin = vec3(0.0f, 0.0f, 0.0f);
 }
 
-Group::Group(const glm::mat4& matrix)
+Group::Group(const mat4& matrix)
 {
 	m_Transformation = matrix;
-	m_Origin = glm::vec3(0.0f, 0.0f, 0.0f);
+	m_Origin = vec3(0.0f, 0.0f, 0.0f);
 }
 
 Group::~Group()
@@ -45,17 +45,15 @@ void Group::setOrigin(float x, float y)
 
 void Group::translate(float x, float y, float z)
 {
-	m_Transformation = glm::translate(m_Transformation, glm::vec3(x, y, z));
+	m_Transformation = m_Transformation * mat4::translation(x, y, z);
 }
 
-void Group::translate(const glm::vec3& amount)
+void Group::translate(const vec3& amount)
 {
-	m_Transformation = glm::translate(m_Transformation, amount);
+	m_Transformation = m_Transformation * mat4::translation(amount);
 }
 
-void Group::rotate(const glm::vec3& axis, float degrees)
+void Group::rotate(const vec3& axis, float degrees)
 {
-	glm::mat4 invTrans = glm::translate(m_Transformation, m_Origin);
-	glm::mat4 rotation = glm::rotate(invTrans, glm::radians<float>(degrees), axis);
-	m_Transformation = glm::translate(rotation, -m_Origin);
+	m_Transformation = m_Transformation * mat4::translation(m_Origin) * mat4::rotation(axis, degrees) * mat4::translation(-m_Origin);
 }

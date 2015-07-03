@@ -2,11 +2,11 @@
 
 Renderer2D::Renderer2D()
 {
-	m_TransformationStack.push_back(glm::mat4(1.0));
+	m_TransformationStack.push_back(mat4::identity());
 	m_TransformationBack = &m_TransformationStack.back();
 }
 
-void Renderer2D::push(const glm::mat4& matrix)
+void Renderer2D::push(const mat4& matrix)
 {
 	m_TransformationStack.push_back(*m_TransformationBack * matrix);
 	m_TransformationBack = &m_TransformationStack.back();

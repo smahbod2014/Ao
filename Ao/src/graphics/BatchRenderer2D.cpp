@@ -1,4 +1,5 @@
 #include "BatchRenderer2D.h"
+#include "../math/AoMath.h"
 
 BatchRenderer2D::BatchRenderer2D()
 {
@@ -72,10 +73,10 @@ void BatchRenderer2D::begin()
 
 void BatchRenderer2D::submit(const Renderable2D* renderable)
 {
-	const glm::vec3& position = renderable->getPosition();
-	const glm::vec2& size = renderable->getSize();
+	const vec3& position = renderable->getPosition();
+	const vec2& size = renderable->getSize();
 	const unsigned int color = renderable->getColor();
-	const std::vector<glm::vec2>& uvs = renderable->getUVs();
+	const std::vector<vec2>& uvs = renderable->getUVs();
 	const GLuint textureID = renderable->getTextureID();
 
 	float samplerIndex = 0.0f;
@@ -105,25 +106,25 @@ void BatchRenderer2D::submit(const Renderable2D* renderable)
 		}
 	}
 
-	m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(position, 1.0f));
+	m_Buffer->position = *m_TransformationBack * position;
 	m_Buffer->uv = uvs[0];
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(position.x + size.x, position.y, position.z, 1.0f));
+	m_Buffer->position = *m_TransformationBack * vec3(position.x + size.x, position.y, position.z);
 	m_Buffer->uv = uvs[1];
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(position.x + size.x, position.y + size.y, position.z, 1.0f));
+	m_Buffer->position = *m_TransformationBack * vec3(position.x + size.x, position.y + size.y, position.z);
 	m_Buffer->uv = uvs[2];
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(position.x, position.y + size.y, position.z, 1.0f));
+	m_Buffer->position = *m_TransformationBack * vec3(position.x, position.y + size.y, position.z);
 	m_Buffer->uv = uvs[3];
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
@@ -132,7 +133,7 @@ void BatchRenderer2D::submit(const Renderable2D* renderable)
 	m_IndexCount += 6;
 }
 
-void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& position, const Font& font, unsigned int color)
+void BatchRenderer2D::drawString(const std::string& text, const vec3& position, const Font& font, unsigned int color)
 {
 	float samplerIndex = 0.0f;
 	
@@ -160,7 +161,7 @@ void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& posit
 	}
 
 	float x = position.x;
-	const glm::vec2& scale = font.getScale();
+	const vec2& scale = font.getScale();
 
 	for (size_t i = 0; i < text.length(); i++)
 	{
@@ -184,26 +185,26 @@ void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& posit
 			float u1 = glyph->s1;
 			float v1 = glyph->t1;
 
-			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x0, y0, 0.0f, 1.0f));
-			m_Buffer->uv = glm::vec2(u0, v0);
+			m_Buffer->position = *m_TransformationBack * vec3(x0, y0, 0.0f);
+			m_Buffer->uv = vec2(u0, v0);
 			m_Buffer->sampler = samplerIndex;
 			m_Buffer->color = color;
 			m_Buffer++;
 
-			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x0, y1, 0.0f, 1.0f));
-			m_Buffer->uv = glm::vec2(u0, v1);
+			m_Buffer->position = *m_TransformationBack * vec3(x0, y1, 0.0f);
+			m_Buffer->uv = vec2(u0, v1);
 			m_Buffer->sampler = samplerIndex;
 			m_Buffer->color = color;
 			m_Buffer++;
 
-			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x1, y1, 0.0f, 1.0f));
-			m_Buffer->uv = glm::vec2(u1, v1);
+			m_Buffer->position = *m_TransformationBack * vec3(x1, y1, 0.0f);
+			m_Buffer->uv = vec2(u1, v1);
 			m_Buffer->sampler = samplerIndex;
 			m_Buffer->color = color;
 			m_Buffer++;
 
-			m_Buffer->position = glm::vec3(*m_TransformationBack * glm::vec4(x1, y0, 0.0f, 1.0f));
-			m_Buffer->uv = glm::vec2(u1, v0);
+			m_Buffer->position = *m_TransformationBack * vec3(x1, y0, 0.0f);
+			m_Buffer->uv = vec2(u1, v0);
 			m_Buffer->sampler = samplerIndex;
 			m_Buffer->color = color;
 			m_Buffer++;
@@ -214,26 +215,26 @@ void BatchRenderer2D::drawString(const std::string& text, const glm::vec3& posit
 		}
 	}
 
-	/*m_Buffer->position = glm::vec3(-8, -8, 0);
-	m_Buffer->uv = glm::vec2(0, 1);
+	/*m_Buffer->position = vec3(-8, -8, 0);
+	m_Buffer->uv = vec2(0, 1);
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_Buffer->position = glm::vec3(8, -8, 0);
-	m_Buffer->uv = glm::vec2(1, 1);
+	m_Buffer->position = vec3(8, -8, 0);
+	m_Buffer->uv = vec2(1, 1);
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_Buffer->position = glm::vec3(8, 8, 0);
-	m_Buffer->uv = glm::vec2(1, 0);
+	m_Buffer->position = vec3(8, 8, 0);
+	m_Buffer->uv = vec2(1, 0);
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;
 
-	m_Buffer->position = glm::vec3(-8, 8, 0);
-	m_Buffer->uv = glm::vec2(0, 0);
+	m_Buffer->position = vec3(-8, 8, 0);
+	m_Buffer->uv = vec2(0, 0);
 	m_Buffer->sampler = samplerIndex;
 	m_Buffer->color = color;
 	m_Buffer++;

@@ -57,6 +57,7 @@
       <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;FT2_BUILD_LIBRARY;WIN32;_LIB;GLEW_STATIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BufferSecurityCheck>true</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -77,6 +78,7 @@
       <FloatingPointModel>Fast</FloatingPointModel>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <BufferSecurityCheck>true</BufferSecurityCheck>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -149,6 +151,7 @@
     <ClCompile Include="src\managers\PicoPNG.cpp" />
     <ClCompile Include="src\managers\SoundManager.cpp" />
     <ClCompile Include="src\managers\TextureManager.cpp" />
+    <ClCompile Include="src\math\mat4.cpp" />
     <ClCompile Include="src\math\vec2.cpp" />
     <ClCompile Include="src\math\vec3.cpp" />
     <ClCompile Include="src\math\vec4.cpp" />
@@ -188,7 +191,9 @@
     <ClInclude Include="src\managers\SoundManager.h" />
     <ClInclude Include="src\managers\TextureManager.h" />
     <ClInclude Include="src\managers\Timer.h" />
+    <ClInclude Include="src\math\AoMath.h" />
     <ClInclude Include="src\math\mat4.h" />
+    <ClInclude Include="src\math\MathUtils.h" />
     <ClInclude Include="src\math\vec2.h" />
     <ClInclude Include="src\math\vec3.h" />
     <ClInclude Include="src\math\vec4.h" />

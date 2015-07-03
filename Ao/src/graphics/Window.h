@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <string>
 #include <iostream>
-#include <glm/glm.hpp>
+#include "../math/AoMath.h"
 
 class Window
 {
@@ -26,12 +26,12 @@ public:
 	float getFps() const { return m_InstantaneousFps; }
 	float getDelta() const { return m_Delta; }
 
-	static const glm::vec4& getClearColor() { return m_ClearColor; }
+	static const vec4& getClearColor() { return m_ClearColor; }
 	static int getWidth() { return m_Width; }
 	static int getHeight() { return m_Height; }
 private:
 	static int m_Width, m_Height;
-	static glm::vec4 m_ClearColor;
+	static vec4 m_ClearColor;
 	
 	SDL_Window* m_Window;
 	std::string m_Name;

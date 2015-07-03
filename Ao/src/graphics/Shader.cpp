@@ -146,17 +146,17 @@ void Shader::setUniform1(const std::string& uniformName, unsigned int value)
 	glUniform1i(lookup(uniformName), (int)value);
 }
 
-void Shader::setUniform2(const std::string& uniformName, const glm::vec2& values)
+void Shader::setUniform2(const std::string& uniformName, const vec2& values)
 {
 	glUniform2f(lookup(uniformName), values.x, values.y);
 }
 
-void Shader::setUniform3(const std::string& uniformName, const glm::vec3& values)
+void Shader::setUniform3(const std::string& uniformName, const vec3& values)
 {
 	glUniform3f(lookup(uniformName), values.x, values.y, values.z);
 }
 
-void Shader::setUniformMatrix4(const std::string& uniformName, const glm::mat4& values)
+void Shader::setUniformMatrix4(const std::string& uniformName, const mat4& values)
 {
-	glUniformMatrix4fv(lookup(uniformName), 1, GL_FALSE, &values[0][0]);
+	glUniformMatrix4fv(lookup(uniformName), 1, GL_FALSE, &values.elements[0]);
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <glm/gtx/transform.hpp>
 #include "graphics/Window.h"
 #include "graphics/Shader.h"
 #include "graphics/Layer.h"
@@ -17,6 +16,7 @@
 #include "managers/SoundManager.h"
 #include "managers/Input.h"
 #include "managers/Timer.h"
+#include "math/AoMath.h"
 #include <ctime>
 
 class Ao

@@ -4,7 +4,7 @@
 #include "BatchRenderer2D.h"
 #include "Shader.h"
 
-Layer::Layer(Renderer2D* renderer, Shader* shader, const glm::mat4& projection)
+Layer::Layer(Renderer2D* renderer, Shader* shader, const mat4& projection)
 {
 	m_Renderer = renderer;
 	m_Shader = shader;

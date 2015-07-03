@@ -40,13 +40,20 @@ vec2 operator-(const vec2& a, float b)
 {
 	return vec2(a.x - b, a.y - b);
 }
+
 vec2 operator*(const vec2& a, float b)
 {
 	return vec2(a.x * b, a.y * b);
 }
+
 vec2 operator/(const vec2& a, float b)
 {
 	return vec2(a.x / b, a.y / b);
+}
+
+vec2 operator-(const vec2& a)
+{
+	return vec2(-a.x, -a.y);
 }
 
 void vec2::operator+=(const vec2& a)

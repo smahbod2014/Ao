@@ -255,6 +255,9 @@
     <ClCompile Include="src\math\vec3.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
+    <ClCompile Include="src\math\mat4.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphics\BatchRenderer2D.h">
@@ -369,6 +372,12 @@
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="src\math\vec3.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\MathUtils.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="src\math\AoMath.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>

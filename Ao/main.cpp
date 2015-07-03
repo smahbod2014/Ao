@@ -23,7 +23,7 @@ public:
 		SoundManager::loadMusic("forest", "Resources/Sounds/forest_temple.ogg", 0.1f);
 
 		m_Shader = new Shader("Resources/Shaders/Basic.vert", "Resources/Shaders/Basic.frag");
-		m_Layer = new Layer(new BatchRenderer2D(), m_Shader, glm::ortho<float>(-16, 16, -9, 9, -1, 1));
+		m_Layer = new Layer(new BatchRenderer2D(), m_Shader, mat4::orthographic(-16, 16, -9, 9, -1, 1));
 
 		int iterations = 0;
 		float step = 0.5f;
@@ -40,24 +40,25 @@ public:
 					texture = TextureManager::get("x");
 				else if (tex == 3)
 					texture = TextureManager::get("yaku");
-				m_Layer->add(new Sprite(glm::vec3(x, y, 0), glm::vec2(step, step), 0xffffffff, texture));
+				m_Layer->add(new Sprite(vec3(x, y, 0), vec2(step, step), 0xffffffff, texture));
 				iterations++;
 			}
 
 		std::cout << "Made " << iterations << " sprites" << std::endl;
 
-		m_Player = new Sprite(glm::vec3(0, 0, 0), glm::vec2(10, 10), TextureManager::get("kirito"));
+		m_Player = new Sprite(vec3(0, 0, 0), vec2(10, 10), TextureManager::get("kirito"));
 		m_Layer->add(m_Player);
 
-		//Group* fpsGroup = new Group(glm::translate(glm::vec3(-15.0f, 7.0f, 0.0f)));
 		m_FpsGroup = new Group();
 		m_FpsGroup->setOrigin(2.5f, 0.75f);
 		m_FpsGroup->translate(-15.0f, 7.0f, 0.0f);
-		m_FpsLabel = new Label("", 0.4f, 0.4f, "default", glm::vec4(1.0, 1.0, 1.0, 1.0f));
-		m_FpsGroup->add(new Sprite(glm::vec3(0, 0, 0), glm::vec2(5.0f, 1.5f), glm::vec4(0.2f, 0.2f, 0.2f, 0.5f)));
+		m_FpsLabel = new Label("", 0.4f, 0.4f, "default", vec4(1.0, 1.0, 1.0, 1.0f));
+		m_FpsGroup->add(new Sprite(vec3(0, 0, 0), vec2(5.0f, 1.5f), vec4(0.2f, 0.2f, 0.2f, 0.5f)));
 		m_FpsGroup->add(m_FpsLabel);
 
 		m_Layer->add(m_FpsGroup);
+
+		//mat4 rot = mat4::rotation(vec3(0, 0, 1), 90);
 
 		SoundManager::getMusic("forest")->play();
 	}
@@ -96,7 +97,7 @@ public:
 		if (Input::isKeyJustPressed(SDLK_s))
 			SoundManager::getMusic("forest")->stop();
 
-		m_FpsGroup->rotate(glm::vec3(0, 0, 1), speed);
+		m_FpsGroup->rotate(vec3(0, 0, 1), speed);
 	}
 
 	void render() override
