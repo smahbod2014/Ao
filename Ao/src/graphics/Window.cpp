@@ -172,11 +172,18 @@ void Window::update()
 			m_ShouldClose = true;
 			break;
 		case SDL_KEYDOWN:
+#ifdef AO_EMSCRIPTEN
 			Input::pressKey(event.key.keysym.sym);
-			std::cout << "Pressed key " << event.key.keysym.sym << std::endl;
+#else
+			Input::pressKey(event.key.keysym.scancode);
+#endif
 			break;
 		case SDL_KEYUP:
+#ifdef AO_EMSCRIPTEN
 			Input::releaseKey(event.key.keysym.sym);
+#else
+			Input::releaseKey(event.key.keysym.scancode);
+#endif
 			break;
 		}
 	}

@@ -13,7 +13,7 @@ public:
 	void init() override
 	{
 		FontManager::get("default")->setScale(Window::getWidth() / 32.0f, Window::getHeight() / 18.0f);
-		TextureManager::load("face", "Resources/Textures/wtf_face.png");
+		TextureManager::load("face", "Resources/Textures/wtf16.png");
 		TextureManager::load("smiley", "Resources/Textures/bricks.png");
 		TextureManager::load("x", "Resources/Textures/X16.png");
 		TextureManager::load("yaku", "Resources/Textures/whocares.png");
@@ -73,37 +73,36 @@ public:
 	void update(float dt) override
 	{
 		const float speed = 15.0f * dt;
-
-		m_Player->position.x -= speed * 0.01f;
 		
-		if (Input::isKeyDown(SDLK_LEFT))
+		if (Input::isKeyDown(AO_KEY_LEFT))
 			m_Player->position.x -= speed;
-		if (Input::isKeyDown(SDLK_RIGHT))
+		if (Input::isKeyDown(AO_KEY_RIGHT))
 			m_Player->position.x += speed;
-		if (Input::isKeyDown(SDLK_DOWN))
+		if (Input::isKeyDown(AO_KEY_DOWN))
 			m_Player->position.y -= speed;
-		if (Input::isKeyDown(SDLK_UP))
+		if (Input::isKeyDown(AO_KEY_UP))
 			m_Player->position.y += speed;
 
-		if (Input::isKeyJustPressed(SDLK_q))
+		
+		if (Input::isKeyJustPressed(AO_KEY_Q))
 			SoundManager::getSound("holyshit")->play();
 
-		if (Input::isKeyJustPressed(SDLK_p))
+		if (Input::isKeyJustPressed(AO_KEY_P))
 			SoundManager::getMusic("forest")->play();
 
-		if (Input::isKeyJustPressed(SDLK_a))
+		if (Input::isKeyJustPressed(AO_KEY_A))
 			SoundManager::getMusic("forest")->pause();
 
-		if (Input::isKeyJustPressed(SDLK_r))
+		if (Input::isKeyJustPressed(AO_KEY_R))
 			SoundManager::getMusic("forest")->resume();
 
-		if (Input::isKeyJustPressed(SDLK_s))
+		if (Input::isKeyJustPressed(AO_KEY_S))
 			SoundManager::getMusic("forest")->stop();
 
-		if (Input::isKeyJustPressed(SDLK_t))
+		if (Input::isKeyJustPressed(AO_KEY_T))
 			std::cout << "T key just pressed" << std::endl;
 
-		if (Input::isKeyDown(SDLK_y))
+		if (Input::isKeyDown(AO_KEY_Y))
 			std::cout << "Y key down" << std::endl;
 
 		m_FpsGroup->rotate(vec3(0, 0, 1), speed);
