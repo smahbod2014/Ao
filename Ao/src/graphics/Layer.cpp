@@ -13,7 +13,11 @@ Layer::Layer(Renderer2D* renderer, Shader* shader, const mat4& projection)
 	shader->bind();
 	shader->setUniformMatrix4("projMatrix", projection);
 	for (int i = 0; i < MAX_TEXTURES; i++)
+#ifdef AO_EMSCRIPTEN
+		shader->setUniform1("texture_" + std::to_string(i), i);
+#else
 		shader->setUniform1("textures[" + std::to_string(i) + "]", i);
+#endif
 	shader->unbind();
 }
 

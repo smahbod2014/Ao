@@ -1,5 +1,7 @@
 #include "Shader.h"
 #include <iostream>
+#include <vector>
+#include <cassert>
 
 GLuint Shader::currentlyBoundID = 0;
 
@@ -8,17 +10,14 @@ Shader::Shader(const char* vert, const char* frag)
 	//Read in the vertex and fragment shaders
 	//We must delete these after we are finished compiling the shaders
 	char* vv = read(vert);
-	char* vf = nullptr;
-	if (frag)
-		vf = read(frag);
+	char* vf = read(frag);
 
 	//Setup the shader
 	setup(vv, vf);
 
 	//Delete the file data arrays we allocted
 	delete[] vv;
-	if (vf)
-		delete[] vf;
+	delete[] vf;
 }
 
 Shader::~Shader()
@@ -75,46 +74,51 @@ char* Shader::read(const char *filename)
 
 void Shader::setup(const char* vs, const char* fs)
 {
-	GLint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	GLint fragmentShader;
-	if (fs)
-		fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	m_ProgramID = glCreateProgram();
+	GLuint vertex = glCreateShader(GL_VERTEX_SHADER);
+	GLuint fragment = glCreateShader(GL_FRAGMENT_SHADER);
 
-	glShaderSource(vertexShader, 1, &vs, 0);
-	if (fs)
-		glShaderSource(fragmentShader, 1, &fs, 0);
+	glShaderSource(vertex, 1, &vs, NULL);
+	glCompileShader(vertex);
 
-	glCompileShader(vertexShader);
-	if (fs)
-		glCompileShader(fragmentShader);
-
-	char glslLog[1024];
-	GLsizei glslLogSize;
-
-	//Get the error log for the Vertex shader
-	glGetInfoLogARB(vertexShader, 1024, &glslLogSize, glslLog);
-	if (glslLogSize)
-		std::cerr << "Vertex program log: " << glslLog << std::endl;
-
-	if (fs)
+	GLint result;
+	glGetShaderiv(vertex, GL_COMPILE_STATUS, &result);
+	if (result == GL_FALSE)
 	{
-		//Get the error log for the Fragment shader
-		glGetInfoLogARB(fragmentShader, 1024, &glslLogSize, glslLog);
-		if (glslLogSize)
-			std::cerr << "Fragment program log: " << glslLog << std::endl;
+		GLint length;
+		glGetShaderiv(vertex, GL_INFO_LOG_LENGTH, &length);
+		std::vector<char> error(length);
+		glGetShaderInfoLog(vertex, length, &length, &error[0]);
+		std::cout << "Failed to compile vertex shader!" << std::endl;
+		printf("%s\n", &error[0]);
+		glDeleteShader(vertex);
+		assert(false);
 	}
 
-	m_ProgramID = glCreateProgram();
+	glShaderSource(fragment, 1, &fs, NULL);
+	glCompileShader(fragment);
 
-	glAttachShader(m_ProgramID, vertexShader);
-	if (fs)
-		glAttachShader(m_ProgramID, fragmentShader);
+	glGetShaderiv(fragment, GL_COMPILE_STATUS, &result);
+	if (result == GL_FALSE)
+	{
+		GLint length;
+		glGetShaderiv(fragment, GL_INFO_LOG_LENGTH, &length);
+		std::vector<char> error(length);
+		glGetShaderInfoLog(fragment, length, &length, &error[0]);
+		std::cout << "Failed to compile fragment shader!" << std::endl;
+		printf("%s\n", &error[0]);
+		glDeleteShader(fragment);
+		assert(false);
+	}
+
+	glAttachShader(m_ProgramID, vertex);
+	glAttachShader(m_ProgramID, fragment);
 
 	glLinkProgram(m_ProgramID);
 	glValidateProgram(m_ProgramID);
-	glDeleteShader(vertexShader);
-	if (fs)
-		glDeleteShader(fragmentShader);
+
+	glDeleteShader(vertex);
+	glDeleteShader(fragment);
 }
 
 GLint Shader::lookup(const std::string& uniformName)

@@ -4,7 +4,7 @@
 class Game : public Ao
 {
 public:
-	Game() {}
+	Game(const std::string& name, unsigned int width, unsigned int height) : Ao(name, width, height) {}
 	virtual ~Game()
 	{
 		delete m_Layer;
@@ -12,17 +12,20 @@ public:
 
 	void init() override
 	{
-		createWindow("Ao!", 960, 540);
 		FontManager::get("default")->setScale(Window::getWidth() / 32.0f, Window::getHeight() / 18.0f);
-		TextureManager::load("face", "Resources/Textures/wtf face.png");
+		TextureManager::load("face", "Resources/Textures/wtf_face.png");
 		TextureManager::load("smiley", "Resources/Textures/bricks.png");
 		TextureManager::load("x", "Resources/Textures/X16.png");
 		TextureManager::load("yaku", "Resources/Textures/whocares.png");
-		TextureManager::load("kirito", "Resources/Textures/kirito.png");
-		SoundManager::loadSound("holyshit", "Resources/Sounds/holy_shit.ogg", 0.25f);
+		TextureManager::load("kirito", "Resources/Textures/kirito2.png");
+		//SoundManager::loadSound("holyshit", "Resources/Sounds/holy_shit.ogg", 0.25f);
 		SoundManager::loadMusic("forest", "Resources/Sounds/forest_temple.ogg", 0.1f);
-
+		
+#ifdef AO_EMSCRIPTEN
+		m_Shader = new Shader("Resources/Shaders/Basic_gles.vert", "Resources/Shaders/Basic_gles.frag");
+#else
 		m_Shader = new Shader("Resources/Shaders/Basic.vert", "Resources/Shaders/Basic.frag");
+#endif
 		m_Layer = new Layer(new BatchRenderer2D(), m_Shader, mat4::orthographic(-16, 16, -9, 9, -1, 1));
 
 		int iterations = 0;
@@ -46,7 +49,7 @@ public:
 
 		std::cout << "Made " << iterations << " sprites" << std::endl;
 
-		m_Player = new Sprite(vec3(0, 0, 0), vec2(10, 10), TextureManager::get("kirito"));
+		m_Player = new Sprite(vec3(0, 0, 0), vec2(12.5f, 12.5f), TextureManager::get("kirito"));
 		m_Layer->add(m_Player);
 
 		m_FpsGroup = new Group();
@@ -57,8 +60,6 @@ public:
 		m_FpsGroup->add(m_FpsLabel);
 
 		m_Layer->add(m_FpsGroup);
-
-		//mat4 rot = mat4::rotation(vec3(0, 0, 1), 90);
 
 		SoundManager::getMusic("forest")->play();
 	}
@@ -72,6 +73,8 @@ public:
 	void update(float dt) override
 	{
 		const float speed = 15.0f * dt;
+
+		m_Player->position.x -= speed * 0.01f;
 		
 		if (Input::isKeyDown(SDLK_LEFT))
 			m_Player->position.x -= speed;
@@ -97,6 +100,12 @@ public:
 		if (Input::isKeyJustPressed(SDLK_s))
 			SoundManager::getMusic("forest")->stop();
 
+		if (Input::isKeyJustPressed(SDLK_t))
+			std::cout << "T key just pressed" << std::endl;
+
+		if (Input::isKeyDown(SDLK_y))
+			std::cout << "Y key down" << std::endl;
+
 		m_FpsGroup->rotate(vec3(0, 0, 1), speed);
 	}
 
@@ -107,7 +116,7 @@ public:
 
 	void finish() override
 	{
-		std::cout << "Finished" << std::endl;
+		std::cout << "AO HAS FINISHED EXECUTING!" << std::endl;
 	}
 
 private:
@@ -120,7 +129,7 @@ private:
 
 int main(int argc, char* argv[])
 {
-	Game game;
+	Game game("Ao", 960, 540);
 	game.start();
 	return 0;
 }

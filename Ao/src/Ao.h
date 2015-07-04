@@ -19,18 +19,33 @@
 #include "math/AoMath.h"
 #include <ctime>
 
+#ifdef AO_EMSCRIPTEN
+#include <emscripten.h>
+#include <functional>
+
+static void dispatch_main(void* fp)
+{
+	std::function<void()>* func = (std::function<void()>*) fp;
+	(*func)();
+}
+#endif
+
 class Ao
 {
 public:
+	Ao(const std::string& name, unsigned int width, unsigned int height)
+	{
+		m_Window = new Window(name, width, height);
+	}
+
 	void start()
 	{
 		srand((unsigned int)time(NULL));
-		FontManager::load("default", "Resources/Fonts/MAGNETOB.ttf", 35.0f);
+		FontManager::load("default", "Resources/Fonts/magnetob.ttf", 35.0f);
 		init();
 		run();
 	}
 protected:
-	Ao() {}
 	virtual ~Ao()
 	{
 		TextureManager::clean();
@@ -38,11 +53,6 @@ protected:
 		SoundManager::clean();
 		if (m_Window) delete m_Window;
 		if (m_Timer) delete m_Timer;
-	}
-
-	void createWindow(const std::string& name, int width, int height)
-	{
-		m_Window = new Window(name, width, height);
 	}
 
 	virtual void init() = 0;
@@ -65,18 +75,24 @@ private:
 		unsigned int updates = 0;
 
 		float previousTime = m_Timer->elapsed();
+		int iteration = 0;
+#ifdef AO_EMSCRIPTEN
+		std::function<void()> gameLoop = [&]()
+#else
 		while (!m_Window->shouldClose())
+#endif
 		{
 			m_Window->clear();
+			m_Window->update();
 
 			m_Delta = m_Timer->elapsed() - previousTime;
 			update(m_Delta);
 			previousTime = m_Timer->elapsed();
-			m_Window->updateInput();
 
 			render();
 			frames++;
-			m_Window->update();
+			m_Window->updateInput();
+			m_Window->swapBuffer();
 
 			float tickDelta = m_Timer->elapsed() - timer;
 			if (tickDelta >= 1.0f)
@@ -89,6 +105,10 @@ private:
 				tick();
 			}
 		}
+#ifdef AO_EMSCRIPTEN
+		;
+		emscripten_set_main_loop_arg(dispatch_main, &gameLoop, 0, 1);
+#endif
 
 		finish();
 	}

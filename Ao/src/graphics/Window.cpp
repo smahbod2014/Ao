@@ -26,7 +26,7 @@ Window::Window(const std::string& name, int width, int height)
 	
 	std::cout << "Open GL version: " << glGetString(GL_VERSION) << std::endl;
 
-	m_ClearColor = vec4(0, 0, 0, 0);
+	m_ClearColor = vec4(1, 0, 0, 0);
 	glClearColor(m_ClearColor.x, m_ClearColor.y, m_ClearColor.z, m_ClearColor.w);
 	glViewport(0, 0, m_Width, m_Height);
 	//glEnable(GL_DEPTH_TEST);
@@ -50,6 +50,10 @@ Window::~Window()
 
 void Window::swapBuffer()
 {
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR)
+		std::cout << "Open GL error: " << error << std::endl;
+
 	SDL_GL_SwapWindow(m_Window);
 }
 
@@ -159,12 +163,6 @@ void Window::clear()
 
 void Window::update()
 {
-	GLenum error = glGetError();
-	if (error != GL_NO_ERROR)
-		std::cout << "Open GL error: " << error << std::endl;
-
-	SDL_GL_SwapWindow(m_Window);
-
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
@@ -175,6 +173,7 @@ void Window::update()
 			break;
 		case SDL_KEYDOWN:
 			Input::pressKey(event.key.keysym.sym);
+			std::cout << "Pressed key " << event.key.keysym.sym << std::endl;
 			break;
 		case SDL_KEYUP:
 			Input::releaseKey(event.key.keysym.sym);

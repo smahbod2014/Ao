@@ -12,6 +12,10 @@ BatchRenderer2D::~BatchRenderer2D()
 	if (m_Vao) glDeleteVertexArrays(1, &m_Vao);
 	if (m_Vbo) glDeleteBuffers(1, &m_Vbo);
 	if (m_Ibo) glDeleteBuffers(1, &m_Ibo);
+
+#ifdef AO_EMSCRIPTEN
+	delete[] m_BufferBase;
+#endif
 }
 
 void BatchRenderer2D::init()
@@ -63,12 +67,21 @@ void BatchRenderer2D::init()
 	glBindVertexArray(0);
 
 	delete[] indices;
+
+#ifdef AO_EMSCRIPTEN
+	m_BufferBase = new VertexData[MAX_SPRITES * 4];
+#endif
 }
 
 void BatchRenderer2D::begin()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
+
+#ifdef AO_EMSCRIPTEN
+	m_Buffer = m_BufferBase;
+#else
 	m_Buffer = (VertexData*)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+#endif
 }
 
 void BatchRenderer2D::submit(const Renderable2D* renderable)
@@ -244,7 +257,13 @@ void BatchRenderer2D::drawString(const std::string& text, const vec3& position, 
 
 void BatchRenderer2D::end()
 {
+#ifdef AO_EMSCRIPTEN
+	glBindBuffer(GL_ARRAY_BUFFER, m_Vbo);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, (m_Buffer - m_BufferBase) * sizeof(VertexData), m_BufferBase);
+	m_Buffer = m_BufferBase;
+#else
 	glUnmapBuffer(GL_ARRAY_BUFFER);
+#endif
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	flush();

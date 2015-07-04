@@ -8,7 +8,11 @@
 #include "Renderable2D.h"
 
 #define MAX_SPRITES 60000
-#define MAX_TEXTURES 32
+#ifdef AO_EMSCRIPTEN
+	#define MAX_TEXTURES 8
+#else
+	#define MAX_TEXTURES 32
+#endif
 #define BUFFER_SIZE sizeof(VertexData) * 4 * MAX_SPRITES
 #define INDICES_SIZE MAX_SPRITES * 6
 
@@ -38,6 +42,9 @@ private:
 	GLuint m_Ibo;
 	GLsizei m_IndexCount;
 	VertexData* m_Buffer = nullptr;
+#ifdef AO_EMSCRIPTEN
+	VertexData* m_BufferBase = nullptr;
+#endif
 
 	std::vector<GLuint> m_Textures;
 };

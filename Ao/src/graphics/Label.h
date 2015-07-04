@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderable2D.h"
+#include <string>
 
 class Font;
 
