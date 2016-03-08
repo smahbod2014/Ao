@@ -5,19 +5,29 @@
 
 GLuint Shader::currentlyBoundID = 0;
 
-Shader::Shader(const char* vert, const char* frag)
+Shader::Shader(const char* vert, const char* frag, bool isFromFile /* = true*/)
 {
-	//Read in the vertex and fragment shaders
-	//We must delete these after we are finished compiling the shaders
-	char* vv = read(vert);
-	char* vf = read(frag);
+	/*
+	TODO: Add Emscripten macro guards here and append "_gles" to filename
+	so it doens't have to be done in the Game files
+	*/
 
-	//Setup the shader
-	setup(vv, vf);
+	if (isFromFile)
+	{
+		char* vv = read(vert);
+		char* vf = read(frag);
 
-	//Delete the file data arrays we allocted
-	delete[] vv;
-	delete[] vf;
+		//Setup the shader
+		setup(vv, vf);
+
+		//Delete the file data arrays we allocted
+		delete[] vv;
+		delete[] vf;
+	}
+	else
+	{
+		setup(vert, frag);
+	}
 }
 
 Shader::~Shader()
@@ -116,6 +126,18 @@ void Shader::setup(const char* vs, const char* fs)
 
 	glLinkProgram(m_ProgramID);
 	glValidateProgram(m_ProgramID);
+
+	glGetProgramiv(m_ProgramID, GL_LINK_STATUS, &result);
+	if (result == GL_FALSE)
+	{
+		GLint length;
+		glGetProgramiv(m_ProgramID, GL_INFO_LOG_LENGTH, &length);
+		std::vector<char> error(length);
+		glGetProgramInfoLog(m_ProgramID, length, &length, &error[0]);
+		std::cout << "Failed to link shaders!" << std::endl;
+		printf("%s\n", &error[0]);
+		assert(false);
+	}
 
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);

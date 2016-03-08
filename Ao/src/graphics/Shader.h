@@ -8,7 +8,7 @@
 class Shader
 {
 public:
-	Shader(const char* vert, const char* frag);
+	Shader(const char* vert, const char* frag, bool isFromFile = true);
 	~Shader();
 
 	void bind();

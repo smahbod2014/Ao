@@ -6,8 +6,10 @@
 
 class Font
 {
+	friend class FontManager;
 public:
 	Font(const std::string& filepath, float size);
+	Font(const char* source, float size, size_t bytes);
 	~Font();
 
 	void setScale(float x, float y);
@@ -21,4 +23,7 @@ private:
 	ftgl::texture_font_t* m_Font;
 	float m_Size;
 	vec2 m_Scale;
+
+	static const char* s_DefaultFont1[3];
+	static const char* s_DefaultFont2[26];
 };

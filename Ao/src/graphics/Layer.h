@@ -11,6 +11,7 @@ class Layer
 {
 public:
 	Layer(Renderer2D* renderer, Shader* shader, const mat4& projection);
+	Layer(Renderer2D* renderer, const mat4& projection);
 	virtual ~Layer();
 
 	virtual void add(Renderable2D* renderable);

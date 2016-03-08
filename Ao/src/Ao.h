@@ -41,7 +41,8 @@ public:
 	void start()
 	{
 		srand((unsigned int)time(NULL));
-		FontManager::load("default", "Resources/Fonts/magnetob.ttf", 35.0f);
+		//FontManager::load("default", "Resources/Fonts/magnetob.ttf", 35.0f);
+		FontManager::initDefaultFonts();
 		init();
 		run();
 	}

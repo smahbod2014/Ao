@@ -20,20 +20,20 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Web|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -55,20 +55,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(SolutionDir)/Dependencies/include;$(ProjectDir)/ext/freetype/include;$(ProjectDir)/ext/freetype-gl;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Dependencies/lib;$(LibraryPath)</LibraryPath>
-    <IntDir>$(SolutionDir)bin\$(Configuration)\Intermediates\</IntDir>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Intermediates\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(SolutionDir)/Dependencies/include;$(ProjectDir)/ext/freetype/include;$(ProjectDir)/ext/freetype-gl;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Dependencies/lib;$(LibraryPath)</LibraryPath>
-    <IntDir>$(SolutionDir)bin\$(Configuration)\Intermediates\</IntDir>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Intermediates\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Web|Win32'">
     <IncludePath>$(SolutionDir)/Dependencies/include;$(ProjectDir)/ext/freetype/include;$(ProjectDir)/ext/freetype-gl;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)/Dependencies/lib;$(LibraryPath)</LibraryPath>
-    <IntDir>$(SolutionDir)bin\$(Configuration)\Intermediates\</IntDir>
-    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\Intermediates\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,6 +84,9 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -107,6 +110,9 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Web|Win32'">
     <ClCompile>
@@ -130,6 +136,9 @@
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_mixer.lib;glew32s.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ext\freetype-gl\platform.c" />
@@ -175,11 +184,11 @@
     <ClCompile Include="ext\freetype\src\type1\type1.c" />
     <ClCompile Include="ext\freetype\src\type42\type42.c" />
     <ClCompile Include="ext\freetype\src\winfonts\winfnt.c" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\audio\Music.cpp" />
     <ClCompile Include="src\audio\Sound.cpp" />
     <ClCompile Include="src\graphics\BatchRenderer2D.cpp" />
     <ClCompile Include="src\graphics\Font.cpp" />
+    <ClCompile Include="src\graphics\ShaderFactory.cpp" />
     <ClCompile Include="src\managers\FontManager.cpp" />
     <ClCompile Include="src\graphics\Group.cpp" />
     <ClCompile Include="src\graphics\Label.cpp" />
@@ -213,6 +222,8 @@
     <ClInclude Include="ext\freetype\include\config\ftoption.h" />
     <ClInclude Include="ext\freetype\include\config\ftstdlib.h" />
     <ClInclude Include="ext\freetype\include\ft2build.h" />
+    <ClInclude Include="src\graphics\FontFactory.h" />
+    <ClInclude Include="src\graphics\ShaderFactory.h" />
     <ClInclude Include="src\Ao.h" />
     <ClInclude Include="src\audio\Music.h" />
     <ClInclude Include="src\audio\Sound.h" />

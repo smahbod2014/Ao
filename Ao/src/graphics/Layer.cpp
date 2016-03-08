@@ -3,6 +3,7 @@
 #include "Renderable2D.h"
 #include "BatchRenderer2D.h"
 #include "Shader.h"
+#include "ShaderFactory.h"
 
 Layer::Layer(Renderer2D* renderer, Shader* shader, const mat4& projection)
 {
@@ -19,6 +20,11 @@ Layer::Layer(Renderer2D* renderer, Shader* shader, const mat4& projection)
 		shader->setUniform1("textures[" + std::to_string(i) + "]", i);
 #endif
 	shader->unbind();
+}
+
+Layer::Layer(Renderer2D* renderer, const mat4& projection) : Layer(renderer, ShaderFactory::DefaultShader(), projection)
+{
+	
 }
 
 Layer::~Layer()
